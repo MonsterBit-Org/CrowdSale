@@ -39,6 +39,8 @@ contract Crowdsale {
    * @param amount amount of tokens purchased
    */
   event TokenPurchase(address indexed purchaser, address indexed beneficiary, uint256 value, uint256 amount);
+  
+  event TokenSending(address indexed beneficiary, uint256 amount);
 
   /**
    * @param _rate Number of token units a buyer gets per wei
@@ -185,7 +187,7 @@ contract TimedCrowdsale is Crowdsale {
   function TimedCrowdsale(uint256 _rate, address _wallet, MonsterToken _token, uint256 _openingTime, uint256 _closingTime) public
     Crowdsale(_rate, _wallet, _token) 
   {
-    require(_openingTime >= block.timestamp);
+    //require(_openingTime >= block.timestamp);
     require(_closingTime >= _openingTime);
 
     openingTime = _openingTime;
@@ -265,4 +267,14 @@ contract MonsterTokenCrowdsale is FinalizableCrowdsale {
     FinalizableCrowdsale(_rate, _wallet, MonsterToken(_token),  _openingTime, _closingTime) {
   }
   
+  function setRate(uint256 newRate) public onlyOwner {
+      rate = newRate;
+  }
+  
+  function sendTokens(address beneficiary, uint256 tokensAmount) public onlyOwner {
+    require(beneficiary != address(0));
+    _processPurchase(beneficiary, tokensAmount);
+    TokenSending(beneficiary, tokensAmount); // event
+  }
 }
+
