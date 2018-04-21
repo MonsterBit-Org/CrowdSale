@@ -1,4 +1,4 @@
-﻿pragma solidity ^0.4.18;
+pragma solidity ^0.4.18;
 
 import "./SafeMath.sol";
 import "./Ownable.sol";
@@ -20,7 +20,7 @@ contract Crowdsale {
   using SafeMath for uint256;
 
   // The token being sold
-  MonsterToken public token;
+  MonsterBitToken public token;
 
   // Address where funds are collected
   address public wallet;
@@ -47,7 +47,7 @@ contract Crowdsale {
    * @param _wallet Address where collected funds will be forwarded to
    * @param _token Address of the token being sold
    */
-  function Crowdsale(uint256 _rate, address _wallet, MonsterToken _token) public {
+  function Crowdsale(uint256 _rate, address _wallet, MonsterBitToken _token) public {
     require(_rate > 0);
     require(_wallet != address(0));
     require(_token != address(0));
@@ -184,7 +184,7 @@ contract TimedCrowdsale is Crowdsale {
    * @param _openingTime Crowdsale opening time
    * @param _closingTime Crowdsale closing time
    */
-  function TimedCrowdsale(uint256 _rate, address _wallet, MonsterToken _token, uint256 _openingTime, uint256 _closingTime) public
+  function TimedCrowdsale(uint256 _rate, address _wallet, MonsterBitToken _token, uint256 _openingTime, uint256 _closingTime) public
     Crowdsale(_rate, _wallet, _token) 
   {
     //require(_openingTime >= block.timestamp);
@@ -227,7 +227,7 @@ contract FinalizableCrowdsale is TimedCrowdsale, Ownable {
 
   event Finalized();
   
-  function FinalizableCrowdsale(uint256 _rate, address _wallet, MonsterToken _token, uint256 _openingTime, uint256 _closingTime) public
+  function FinalizableCrowdsale(uint256 _rate, address _wallet, MonsterBitToken _token, uint256 _openingTime, uint256 _closingTime) public
     TimedCrowdsale(_rate, _wallet, _token, _openingTime, _closingTime) 
   {
   }
@@ -264,7 +264,7 @@ contract FinalizableCrowdsale is TimedCrowdsale, Ownable {
 contract MonsterTokenCrowdsale is FinalizableCrowdsale {
     
   function MonsterTokenCrowdsale(uint256 _rate, address _wallet, address _token, uint256 _openingTime, uint256 _closingTime) public
-    FinalizableCrowdsale(_rate, _wallet, MonsterToken(_token),  _openingTime, _closingTime) {
+    FinalizableCrowdsale(_rate, _wallet, MonsterBitToken(_token),  _openingTime, _closingTime) {
   }
   
   function setRate(uint256 newRate) public onlyOwner {
@@ -277,4 +277,3 @@ contract MonsterTokenCrowdsale is FinalizableCrowdsale {
     TokenSending(beneficiary, tokensAmount); // event
   }
 }
-
