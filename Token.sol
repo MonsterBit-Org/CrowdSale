@@ -1,4 +1,4 @@
-﻿pragma solidity ^0.4.18;
+pragma solidity ^0.4.18;
 
 import "./SafeMath.sol";
 import "./Ownable.sol";
@@ -58,6 +58,7 @@ contract BasicToken is ERC20Basic {
     Transfer(msg.sender, _to, _value);
     return true;
   }
+ 
 
   /**
   * @dev Gets the balance of the specified address.
@@ -348,9 +349,9 @@ contract DetailedERC20 {
 
 
 
-contract MonsterToken is MintableToken, DetailedERC20 {
+contract MonsterBitToken is MintableToken, DetailedERC20 {
     
-  function MonsterToken() public DetailedERC20("MonsterToken", "MSTR", 18) {
+  function MonsterBitToken() public DetailedERC20("MonsterBit", "MB", 18) {
   }
   
 }
